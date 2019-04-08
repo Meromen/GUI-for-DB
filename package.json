@@ -1,0 +1,27 @@
+{
+  "name": "opdradio",
+  "version": "1.0.0",
+  "description": "simple radio application ",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm install --prefix client/dbClient",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm run dev --prefix client/dbClient",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client/dbClient && npm run build --prefix client/dbClient"
+  },
+  "author": "Meromen, Code7unner, Olegator",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "path": "^0.12.7",
+    "sqlite3": "^4.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
