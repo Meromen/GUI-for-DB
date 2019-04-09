@@ -1,5 +1,6 @@
 import mainPage from './components/MainPage.vue'
 import tableList from './components/TableList.vue'
+import tableView from './components/TableView.vue'
 
 export const routes = [
   {
@@ -11,6 +12,12 @@ export const routes = [
     path: '/tablelist',
     name: 'tableList',
     component: tableList
+  },
+  {
+    path: '/tableview/:tableName',
+    props: true,
+    name: 'tableView',
+    component: tableView
   },
   {
     path: '*',

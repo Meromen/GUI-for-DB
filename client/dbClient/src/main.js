@@ -9,6 +9,7 @@ import VueAxios from 'vue-axios'
 import PrettyCheckbox from 'pretty-checkbox-vue'
 import BootstrapVue from 'bootstrap-vue'
 import VAnimateCss from 'v-animate-css'
+import 'vue-good-table/dist/vue-good-table.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 

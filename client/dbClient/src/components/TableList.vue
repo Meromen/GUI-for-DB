@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 v-for="(table, id) in tableList" :key="id">{{ table.name }} + {{ id }}</h3>
+    <h3 @click="viewTable(table.name)" v-for="(table, id) in tableList" :key="id">{{ table.name }} + {{ id }}</h3>
   </div>
 </template>
 
@@ -9,6 +9,11 @@ export default {
   data () {
     return {
       tableList: []
+    }
+  },
+  methods: {
+    viewTable: function (tableName) {
+      this.$router.push(`/tableview/${tableName}`)
     }
   },
   created () {
