@@ -1,22 +1,34 @@
 <template>
   <div>
-    <input id="tableName" v-model="tablename" type="text"/>
-    <label for="tableName">Table name</label>
-    <div v-for="(field, id) in tableFields" :key="id"  class="row">
-      <input class="col-2 offset-1" :id="id" v-model="tableFields[id].name" type="text"/>
-      <label :for="id">Field name</label>
-      <select class="col-2 offset-1" v-model="tableFields[id].type">
-        <option disabled value="">Type</option>
-        <option>NULL</option>
-        <option>INTEGER</option>
-        <option>REAL</option>
-        <option>TEXT</option>
-        <option>BLOB</option>
-      </select>
-      <input class="col-2 offset-1" :id="-id" v-model="tableFields[id].option" type="text" />
-      <label :for="-id">Option</label>
+    <div class="row ml-4 mr-4 form-group">
+      <label for="tableName"><h1>Table name</h1></label>
+      <input class="form-control" id="tableName" v-model="tableName" placeholder="Table name" type="text"/>
     </div>
-    <button class="btn btn-primary" @click="addField">Add field</button>
+    <hr>
+    <div v-for="(field, id) in tableFields" :key="id"  class="form-row form-group">
+      <div class="col ml-4">
+        <input class="form-control" :id="id" v-model="tableFields[id].name" placeholder="Field name" type="text"/>
+      </div>
+      <div class="col">
+        <select class="form-control" v-model="tableFields[id].type">
+          <option disabled value="">Type</option>
+          <option>NULL</option>
+          <option>INTEGER</option>
+          <option>REAL</option>
+          <option>TEXT</option>
+          <option>BLOB</option>
+        </select>
+      </div>
+      <div class="col mr-4">
+        <input class="form-control" :id="-id" v-model="tableFields[id].option" placeholder="Oprion" type="text" />
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary btn-lg btn-block offset-1 col-10" @click="addField">Add field</button>
+    </div>
+    <div class="row mt-3">
+      <button class="btn btn-lg btn-outline-success btn-block offset-1 col-10" @click="createTable">Create table</button>
+    </div>
   </div>
 </template>
 
@@ -32,13 +44,36 @@ class TableField {
 export default {
   data () {
     return {
-      tablename: '',
+      tableName: '',
       tableFields: []
     }
   },
   methods: {
     addField: function () {
       this.tableFields.push(new TableField())
+    },
+    createTable: function () {
+      let obj = {
+        'tableName': this.tableName,
+        'tableFields': this.tableFields
+      }
+      console.log(obj)
+
+      let json = JSON.stringify(obj)
+      const url = 'http://localhost:8000/db/tablecreate'
+      console.log(json)
+
+      this.axios.post(url, obj, {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }}).then((res) => {
+        if (res.status !== 200) {
+          console.log('Error:', res.status)
+        } else {
+          console.log(res)
+          this.$router.push('/tablelist')
+        }
+      })
     }
   }
 }

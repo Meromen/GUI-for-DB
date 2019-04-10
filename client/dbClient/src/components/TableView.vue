@@ -1,6 +1,6 @@
 <template>
   <div>
-      <vue-good-table :rows="tableData" :columns="columns"/>
+    <vue-good-table :rows="tableData" :columns="columns"/>
   </div>
 </template>
 
@@ -29,12 +29,16 @@ export default {
     }}).then((res) => {
       this.tableData = res.data
       console.log(res.data)
-      for (let item of Object.keys(res.data[0])) {
-        this.columns.push({
-          'field': item,
-          'label': item
-        })
-      }
+      this.axios.get(`http://localhost:8000/db/tablescema/${this.tableName}`, {headers: {
+        'Access-Control-Allow-Origin': '*'
+      }}).then((res) => {
+        for (let item of res.data) {
+          this.columns.push({
+            'field': item.name,
+            'label': item.name
+          })
+        }
+      })
     })
   }
 }

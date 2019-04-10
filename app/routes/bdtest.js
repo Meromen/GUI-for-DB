@@ -15,28 +15,42 @@ module.exports = function(app, sql) {
         let db = connectDB(sql);
     })
 
-    app.post('/db/createtable', (req, res) => {
+    app.post('/db/tablecreate', (req, res) => {
         res.header('Access-Control-Allow-Origin', '*')
         let db = connectDB(sql);
 
+        console.log('body', Object.keys(req.body))
+        let tableOptions = {
+            'name' : req.body.tableName,
+            'fields' : req.body.tableFields
+        }
+
+        console.log('option', tableOptions)
         //let body = JSON.parse(req.body)
         let resRows = [];
         let dataType = ""
-        console.log(body.dataType)
-        req.body.dataType.forEach((key, index) => {
-            dataType += (key.name, key.type, key.oprion , (index != req.body.dataType.length - 1) ? ', ' : '')
+
+        tableOptions.fields.forEach((key, index) => {
+            dataType += key.name + ' '
+            dataType += key.type + ' '
+            dataType += key.option + ' '
+            dataType += ((index != tableOptions.fields.length - 1) ? ', ' : '')
         });
 
-        console.log(dataType)
         db.serialize(() => {
-            db.run(`CREATE TABLE ${req.body.name}(${dataType})`, (err) => {
+            db.run(`CREATE TABLE ${tableOptions.name}(${dataType})`, (err) => {
                 if (err) {
+
+                    console.log("req", dataType)
+                    console.log('create table',err.message)
                     return res.send(err.message)
                 }
             })
         });
+
         db.close((err)=> {
             if (err) {
+                console.log(err.message)
                 res.send(err)
             } else {
                 console.log(resRows);
@@ -68,7 +82,7 @@ module.exports = function(app, sql) {
                         field.type = obj[1];
                         obj.splice(0, 2);
 
-                        field.oprion = obj.toString().replace(/,/gi, ' ');
+                        field.option = obj.toString().replace(/,/gi, ' ');
 
                         fieldsList.push(field);
                     })

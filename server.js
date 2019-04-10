@@ -6,6 +6,7 @@ const cors           = require('cors');
 const sqlite3        = require('sqlite3').verbose();
 const port           = 8000;
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 require('./app/routes/bdtest')(app, sqlite3)
 
